@@ -46,15 +46,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_COARSE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
+        int confirmPermission=0;
+          if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
             mMap.setMyLocationEnabled(true);
-        }
+        }else{
+              ActivityCompat.requestPermissions(this,
+                      new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                      confirmPermission);
+          }
 
         // Marker starts in mckeldin
         LatLng mckeldin = new LatLng(38.985882, -76.944845);
-        mMap.addMarker(new MarkerOptions().position(mckeldin).title("Your Location"));
+        mMap.addMarker(new MarkerOptions().position(mckeldin).title("Mckeldin"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mckeldin));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 17.0f ) );
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 16.0f ) );
 
     }
 }
