@@ -12,9 +12,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        
+        JSONObject firstPageEvents = getJSONEventsForPage("335859529840593");
+        System.out.println(firstPageEvents.getJSONArray());
     }
     public void startMapActivity(View view){
         Intent intent = new Intent(this,MapsActivity.class);//Will have some parameters to start a new activity
         startActivity(intent);
     }
+    
+    public JSONObject getJSONEventsForPage(String pageID){
+    
+		/* make the API call */
+		new GraphRequest(
+			AccessToken.getCurrentAccessToken(),
+			pageID,
+			null,
+			HttpMethod.GET,
+			new GraphRequest.Callback() {
+				public void onCompleted(GraphResponse response) {
+				
+					String responseString = response.toString();
+					
+					JSONObject inside = new JSONObject(responseString);
+					return inside;
+				}
+			}
+		).executeAsync();
+		
+	}
 }
