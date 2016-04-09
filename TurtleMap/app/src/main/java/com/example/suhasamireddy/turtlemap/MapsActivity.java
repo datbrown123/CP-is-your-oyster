@@ -49,17 +49,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int confirmPermission=0;
           if ( ContextCompat.checkSelfPermission( this, android.Manifest.permission.ACCESS_FINE_LOCATION ) == PackageManager.PERMISSION_GRANTED ) {
             mMap.setMyLocationEnabled(true);
-        }else{
+        }else{ // Permissions case will always run, displays a message asking for location permissions
               ActivityCompat.requestPermissions(this,
                       new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                       confirmPermission);
           }
-
+        mMap.setMyLocationEnabled(true);  //assume they always say yes
         // Marker starts in mckeldin
         LatLng mckeldin = new LatLng(38.985882, -76.944845);
         mMap.addMarker(new MarkerOptions().position(mckeldin).title("Mckeldin"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mckeldin));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 16.0f ) );
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 15.5f ) );
 
     }
 }
