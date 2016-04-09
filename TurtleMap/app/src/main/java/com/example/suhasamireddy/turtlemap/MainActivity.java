@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         
         JSONObject firstPageEvents = getJSONEventsForPage("335859529840593");
-        System.out.println(firstPageEvents.getJSONArray());
+        System.out.println(firstPageEvents);
     }
     public void startMapActivity(View view){
         Intent intent = new Intent(this,MapsActivity.class);//Will have some parameters to start a new activity
