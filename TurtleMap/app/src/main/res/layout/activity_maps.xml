@@ -12,5 +12,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.suhasamireddy.turtlemap.MapsActivity"
-    tools:layout="@layout/abc_activity_chooser_view_list_item" />
+     />
 </RelativeLayout>
