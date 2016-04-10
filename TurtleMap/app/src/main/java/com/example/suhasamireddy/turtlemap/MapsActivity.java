@@ -61,7 +61,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(mckeldin).title("Mckeldin"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mckeldin));
         mMap.animateCamera( CameraUpdateFactory.zoomTo( 15.5f ) );
+<<<<<<< HEAD
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+=======
+        /*Testing marker 1*/
+        LatLng Climb = new LatLng(MainActivity.events.get(0).latitude,
+                MainActivity.events.get(0).longitude);
+        mMap.addMarker(new MarkerOptions().position(Climb).title(
+                MainActivity.events.get(0).eventName + " " + MainActivity.events.get(0).latitude
+                + " " + MainActivity.events.get(0).longitude +
+                        " Time: " + MainActivity.events.get(0).time));
+>>>>>>> origin/master
     }
     
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
