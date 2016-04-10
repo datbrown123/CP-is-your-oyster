@@ -14,6 +14,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,33 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
     
     //returns a String with Lat and Longitude based on address of location
-	LatLon getLatLon (String address){
-	
-        double latlon[] = new double[2];
-        try {
-            String toQuery = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address;
 
-            URL url = new URL(toQuery);
-            URLConnection connection = url.openConnection();
-            String line;
-            StringBuilder builder = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-
-            JSONObject json = new JSONObject(builder.toString());
-
-            JSONArray loc = json.getJSONObject("results").getJSONObject("geometry").getJSONArray("location");
-            latlon[0]=loc.getDouble(0);
-            latlon[1]=loc.getDouble(1);
-            return new LatLon(latlon[0],latlon[1]);
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return null;
-	}
 
 	//will return a String with all steps concatenated
 	String returnDirections(JSONObject steps){
@@ -147,6 +122,34 @@ class MapTask extends AsyncTask<URL, Integer, Long> {
         double x = 2;//Everything is retrieved properly  tested with 0 element
         return new Long(0);
     }
+    static LatLng getLatLon (String address){
+
+        double latlon[] = new double[2];
+        try {
+            String toQuery = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address;
+
+            URL url = new URL(toQuery);
+            URLConnection connection = url.openConnection();
+            String line;
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+
+            JSONObject json = new JSONObject(builder.toString());
+
+            JSONArray loc = json.getJSONObject("results").getJSONObject("geometry").getJSONArray("location");
+            latlon[0]=loc.getDouble(0);
+
+            latlon[1]=loc.getDouble(1);
+            return new LatLng(latlon[0],latlon[1]);
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     protected void onPostExecute(Long result) {
         // set the results in Ui }
@@ -180,12 +183,12 @@ class MapTask extends AsyncTask<URL, Integer, Long> {
                         lat = event.getJSONObject("place").getJSONObject("location").getDouble("latitude");
                         lon = event.getJSONObject("place").getJSONObject("location").getDouble("longitude");
                     }
+
                     String place = event.getJSONObject("place").getString("name");
                     newMap.add(new MapEvent(name,descrip,lat,lon,place,startTime));
                 } catch(org.json.JSONException e) {}
             }
         } catch(Exception e){
-            e.printStackTrace();
         }
         return newMap;
     }

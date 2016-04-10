@@ -16,11 +16,14 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+
+import org.json.JSONObject;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    private Marker mMarker;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +63,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng mckeldin = new LatLng(38.985882, -76.944845);
         mMap.addMarker(new MarkerOptions().position(mckeldin).title("Mckeldin"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mckeldin));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 15.5f ) );
-        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 14.5f ) );
         /*Testing marker 1*/
-        LatLng Climb = new LatLng(MainActivity.events.get(0).latitude,
-                MainActivity.events.get(0).longitude);
-        mMap.addMarker(new MarkerOptions().position(Climb).title(
-                MainActivity.events.get(0).eventName + " " + MainActivity.events.get(0).latitude
-                + " " + MainActivity.events.get(0).longitude +
-                        " Time: " + MainActivity.events.get(0).time));
+        LatLng coords[] = new LatLng[MainActivity.events.size()];
+        for(int i = 0; i < coords.length; i++){
+            coords[i] = new LatLng(MainActivity.events.get(i).latitude, MainActivity.events.get(i).longitude);
+            mMap.addMarker(new MarkerOptions().position(coords[i]).title("Name: " + MainActivity.events.get(i).eventName +
+             " " + MainActivity.events.get(i).latitude + " " + MainActivity.events.get(i)));
+        }
     }
     
-    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
-    	
+    /*
         @Override
         public void onMyLocationChange(Location location) {
             LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
@@ -80,9 +81,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(mMap != null){
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
             }
-        }
-    };
-    
+        }*/
+
+    /*
     //draws a blue line between two locations
     private void drawLineBetweenLocs(LatLng origin, LatLng dest){
     	Polyline line = mMap.addPolyline(new PolylineOptions().add(origin,dest)).width(8).color(Color.BLUE));
@@ -109,5 +110,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 	    return null;
 	}	
     
-    private 
+    private */
 }
