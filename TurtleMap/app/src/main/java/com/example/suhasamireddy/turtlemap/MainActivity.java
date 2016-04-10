@@ -47,40 +47,53 @@ public class MainActivity extends AppCompatActivity {
     }
     
     //returns a String with Lat and Longitude based on address of location
-	String getLatLon (String address){
+	double[] getLatLon (String address){
+        double latlon[] = new double[2];
+        try {
+            String toQuery = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address;
 
-		String toQuery = "https://maps.googleapis.com/maps/api/geocode/json?address="+address;
-	
-		URL url = new URL(webPage);
-		URLConnection connection = url.openConnection();
-		String line;
-		StringBuilder builder = new StringBuilder();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		while((line = reader.readLine()) != null) {
-			builder.append(line);
-		}
+            URL url = new URL(toQuery);
+            URLConnection connection = url.openConnection();
+            String line;
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
 
-		JSONObject json = new JSONObject(builder.toString());
-	
-		JSONArray loc = json.getJSONArray("geometry").getJSONArray("location");
-	
-		return loc.getDouble("latitude").toString() + "&" + loc.getDouble("longitude").toString();
+            JSONObject json = new JSONObject(builder.toString());
 
+            JSONArray loc = json.getJSONObject("results").getJSONObject("geometry").getJSONArray("location");
+            latlon[0]=loc.getDouble(0);
+            latlon[1]=loc.getDouble(1);
+            return latlon;
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
 	}
 
 	//will return a String with all steps concatenated
-	String returnDirections(JSONArray steps){
-		
+	String returnDirections(JSONObject steps){
+        try {
 		String toReturn = "";
-		
-		JSONArray allSteps = steps.getJSONArray("html_instructions");
-		int size = allSteps.size();
-		
-		for(int i=0;i<size;i++){
-			toReturn+=allSteps.getString(i);
-		}
 
-		return toReturn;
+		JSONArray allSteps = steps.getJSONArray("html_instructions");
+		int size = allSteps.length();
+
+
+
+            for (int i = 0; i < size; i++) {
+                toReturn += allSteps.getString(i);
+            }
+            return toReturn;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+	    return null;
 	}	
 
     public void getJSONEventsForPage(String pageID){
