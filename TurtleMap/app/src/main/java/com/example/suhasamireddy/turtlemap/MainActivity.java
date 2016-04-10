@@ -46,6 +46,21 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+	//will return a String with all steps concatenated
+	String returnDirections(JSONArray steps){
+		
+		String toReturn = "";
+		
+		JSONArray allSteps = steps.getJSONArray("html_instructions");
+		int size = allSteps.size();
+		
+		for(int i=0;i<size;i++){
+			toReturn+=allSteps.getString(i);
+		}
+
+		return toReturn;
+	}	
+
     public void getJSONEventsForPage(String pageID){
 
 
@@ -69,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
 		).executeAsync();
 
 	}
+
+	
+
 }
 
 class MapTask extends AsyncTask<URL, Integer, Long> {
