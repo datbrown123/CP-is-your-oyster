@@ -82,4 +82,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     };
+    
+    //draws a blue line between two locations
+    private void drawLineBetweenLocs(LatLng origin, LatLng dest){
+    	Polyline line = mMap.addPolyline(new PolylineOptions().add(origin,dest)).width(8).color(Color.BLUE));
+    }
+    
+    
+	//will return a String with all steps concatenated
+	String returnDirections(JSONObject steps){
+        try {
+		String toReturn = "";
+
+		JSONArray allSteps = steps.getJSONArray("html_instructions");
+		int size = allSteps.length();
+
+            for (int i = 0; i < size; i++) {
+                toReturn += allSteps.getString(i);
+            }
+            return toReturn;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+	    return null;
+	}	
+    
+    private 
 }

@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
     
     //returns a String with Lat and Longitude based on address of location
-	double[] getLatLon (String address){
+	LatLon getLatLon (String address){
+	
         double latlon[] = new double[2];
         try {
             String toQuery = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             JSONArray loc = json.getJSONObject("results").getJSONObject("geometry").getJSONArray("location");
             latlon[0]=loc.getDouble(0);
             latlon[1]=loc.getDouble(1);
-            return latlon;
+            return new LatLon(latlon[0],latlon[1]);
 
         }catch(Exception e){
             e.printStackTrace();
@@ -81,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
 		JSONArray allSteps = steps.getJSONArray("html_instructions");
 		int size = allSteps.length();
-
-
 
             for (int i = 0; i < size; i++) {
                 toReturn += allSteps.getString(i);
