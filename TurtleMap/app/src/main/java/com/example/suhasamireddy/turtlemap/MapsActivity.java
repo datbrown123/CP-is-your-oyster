@@ -1,11 +1,14 @@
 package com.example.suhasamireddy.turtlemap;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
@@ -17,13 +20,17 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import org.json.JSONObject;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import java.util.GregorianCalendar;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +41,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        //toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
+        //setSupportActionBar(toolbar);
     }
-
+    public void showEvents(View view){
+        Intent events = new Intent(this, EventList.class);
+        startActivity(events);
+    }
 
     /**
      * Manipulates the map once available.
@@ -63,13 +74,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng mckeldin = new LatLng(38.985882, -76.944845);
         mMap.addMarker(new MarkerOptions().position(mckeldin).title("Mckeldin"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(mckeldin));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 14.5f ) );
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 14.0f ) );
         /*Testing marker 1*/
         LatLng coords[] = new LatLng[MainActivity.events.size()];
         for(int i = 0; i < coords.length; i++){
-            coords[i] = new LatLng(MainActivity.events.get(i).latitude, MainActivity.events.get(i).longitude);
-            mMap.addMarker(new MarkerOptions().position(coords[i]).title("Name: " + MainActivity.events.get(i).eventName +
-             " " + MainActivity.events.get(i).latitude + " " + MainActivity.events.get(i)));
+            String time = MainActivity.events.get(i).time;
+            String[] dateTime = time.split(" ");
+            String[] date = dateTime[0].split("-");
+            String[] clock = dateTime[1].split(":");
+            GregorianCalendar currTime = new GregorianCalendar();
+            GregorianCalendar eventTime = new GregorianCalendar(Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]),
+                    Integer.parseInt(clock[0]),Integer.parseInt(clock[1]),Integer.parseInt(clock[2]));
+            if (eventTime.compareTo(currTime) > 0) {
+                coords[i] = new LatLng(MainActivity.events.get(i).latitude, MainActivity.events.get(i).longitude);
+                mMap.addMarker(new MarkerOptions().position(coords[i]).title("Name: " + MainActivity.events.get(i).eventName +
+                        "Time: " + MainActivity.events.get(i).time));
+            }
         }
     }
     

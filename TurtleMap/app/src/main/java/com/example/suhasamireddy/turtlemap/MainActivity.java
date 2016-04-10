@@ -1,5 +1,6 @@
 package com.example.suhasamireddy.turtlemap;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
@@ -25,17 +26,17 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     static ArrayList<MapEvent> events = new ArrayList<MapEvent>();
     static JSONObject value=new JSONObject();
-    static TextView txt;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
        // FacebookSdk.sdkInitialize(getApplicationContext());
-        txt=(TextView) findViewById(R.id.textView);
+
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build(); StrictMode.setThreadPolicy(policy);
         new MapTask().execute(null, null, null); // lat long
@@ -176,6 +177,8 @@ class MapTask extends AsyncTask<URL, Integer, Long> {
                 String name = event.getString("name");
                 String descrip = event.getString("description");
                 String startTime = event.getString("start_time");
+                String date = startTime.split("T")[0] + " "+startTime.split("T")[1].split("-")[0];
+
                 double lat = 0;
                 double lon = 0;
                 try {
@@ -185,7 +188,7 @@ class MapTask extends AsyncTask<URL, Integer, Long> {
                     }
 
                     String place = event.getJSONObject("place").getString("name");
-                    newMap.add(new MapEvent(name,descrip,lat,lon,place,startTime));
+                    newMap.add(new MapEvent(name,descrip,lat,lon,place,date));
                 } catch(org.json.JSONException e) {}
             }
         } catch(Exception e){
