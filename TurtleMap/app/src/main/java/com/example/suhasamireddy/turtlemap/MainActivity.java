@@ -129,7 +129,7 @@ class MapTask extends AsyncTask<URL, Integer, Long> {
                         lon = event.getJSONObject("place").getJSONObject("location").getDouble("longitude");
                     }
                     String place = event.getJSONObject("place").getString("name");
-                    newMap.add(new MapEvent(name,descrip,lat,lon,place));
+                    newMap.add(new MapEvent(name,descrip,lat,lon,place,startTime));
                 } catch(org.json.JSONException e) {}
             }
         } catch(Exception e){
