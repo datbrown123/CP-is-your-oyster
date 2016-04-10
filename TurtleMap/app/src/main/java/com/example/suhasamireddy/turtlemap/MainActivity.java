@@ -21,9 +21,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    static ArrayList<MapEvent> events;
     static JSONObject value=new JSONObject();
     static TextView txt;
 
