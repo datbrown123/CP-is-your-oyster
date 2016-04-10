@@ -29,7 +29,7 @@ import java.util.GregorianCalendar;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
+    private GoogleMap mMap;   
     private Toolbar toolbar;
 
     @Override
