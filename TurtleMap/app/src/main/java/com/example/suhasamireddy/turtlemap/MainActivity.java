@@ -109,7 +109,7 @@ class MapTask extends AsyncTask<URL, Integer, Long> {
 
         String fbURL = "https://graph.facebook.com/";
         String[] eventID = {"335859529840593", "6114763231", "16972274487", "32211938844",
-                "8510956006", "204730552914910"};
+                "8510956006", "204730552914910"}; /*,"170244676346718"*/
         String search = "/events?access_token=";
         String token ="1553620764938416|25a05f3e6210cd7f3ab547c268b956f9";
         ArrayList<MapEvent> tmp  =  new  ArrayList<MapEvent>();
