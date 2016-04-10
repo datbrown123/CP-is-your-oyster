@@ -45,6 +45,28 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,MapsActivity.class);//Will have some parameters to start a new activity
         startActivity(intent);
     }
+    
+    //returns a String with Lat and Longitude based on address of location
+	String getLatLon (String address){
+
+		String toQuery = "https://maps.googleapis.com/maps/api/geocode/json?address="+address;
+	
+		URL url = new URL(webPage);
+		URLConnection connection = url.openConnection();
+		String line;
+		StringBuilder builder = new StringBuilder();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+		while((line = reader.readLine()) != null) {
+			builder.append(line);
+		}
+
+		JSONObject json = new JSONObject(builder.toString());
+	
+		JSONArray loc = json.getJSONArray("geometry").getJSONArray("location");
+	
+		return loc.getDouble("latitude").toString() + "&" + loc.getDouble("longitude").toString();
+
+	}
 
 	//will return a String with all steps concatenated
 	String returnDirections(JSONArray steps){
